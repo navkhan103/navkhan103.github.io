@@ -71,9 +71,14 @@ footer a{color:#8FA8C2}
   <h2>FAQ</h2>
   <div class="faq-item"><strong>My form sends different field names - what do I change?</strong><span>Only the expressions. If your form sends full_name instead of name, change {{ $json.body.name }} to {{ $json.body.full_name }} in the Notion and Slack nodes.</span></div><div class="faq-item"><strong>Can it also send the lead an auto-reply email?</strong><span>Yes. Add a Gmail or SMTP node after the webhook that emails {{ $json.body.email }} a thank-you note. Keep it short and human.</span></div><div class="faq-item"><strong>Is a raw webhook secure enough?</strong><span>Use the long random production URL n8n generates and nobody will guess it. For more, set the Webhook node's authentication to Header Auth and add the same secret header to your form backend.</span></div>
   <div class="cta-box">
+    <h3>Want the workflows this one is a warm-up for?</h3>
+    <p>The Pro Pack has 16 production-grade automations &mdash; AI support agent, cart recovery, lead scoring, invoice extraction &mdash; each with a setup guide. $19, instant download.</p>
+    <a class="btn" href="https://navkhan77.gumroad.com/l/n8n-automation-pack">Get the Pro Pack &rarr;</a>
+  </div>
+  <div class="cta-box">
     <h3>Need it customized for your exact process?</h3>
     <p>I build custom n8n automations and AI agents professionally: your tools, your edge cases, tested and documented.</p>
-    <a class="btn" href="https://www.fiverr.com/realkhan103/build-n8n-automations-and-ai-agents-that-run-your-business-on-autopilot" rel="nofollow sponsored">Hire me on Fiverr &rarr;</a>
+    <a class="btn ghost" href="https://www.fiverr.com/realkhan103/build-n8n-automations-and-ai-agents-that-run-your-business-on-autopilot" rel="nofollow sponsored">Hire me on Fiverr &rarr;</a>
   </div>
 </article>
 <footer><div class="wrap">
