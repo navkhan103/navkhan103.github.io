@@ -66,7 +66,7 @@ footer a{color:#8FA8C2}
   <div class="cta-box">
     <h3>Want this running 24/7?</h3>
     <p>Self-host n8n on a cheap VPS and this workflow runs around the clock for less than a coffee a month.</p>
-    <a class="btn" href="#hostinger-affiliate-pending" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
+    <a class="btn" href="https://www.hostinger.com?REFERRALCODE=ZHVNAVKHADAZ" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
   </div>
   <h2>FAQ</h2>
   <div class="faq-item"><strong>Does the bot remember the conversation?</strong><span>This template is stateless - each message stands alone. For memory, add the AI Agent node with a Window Buffer Memory keyed on the Telegram chat ID.</span></div><div class="faq-item"><strong>Can I restrict who can use the bot?</strong><span>Yes. Add an IF node after the trigger that checks {{ $json.message.from.id }} against your own Telegram user ID and only continues for allowed users.</span></div><div class="faq-item"><strong>Can it use Claude or Gemini instead of GPT?</strong><span>Yes - swap the OpenAI node for the Anthropic or Google Gemini node. The rest of the workflow is unchanged.</span></div>

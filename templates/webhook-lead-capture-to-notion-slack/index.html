@@ -66,7 +66,7 @@ footer a{color:#8FA8C2}
   <div class="cta-box">
     <h3>Want this running 24/7?</h3>
     <p>Self-host n8n on a cheap VPS and this workflow runs around the clock for less than a coffee a month.</p>
-    <a class="btn" href="#hostinger-affiliate-pending" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
+    <a class="btn" href="https://www.hostinger.com?REFERRALCODE=ZHVNAVKHADAZ" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
   </div>
   <h2>FAQ</h2>
   <div class="faq-item"><strong>My form sends different field names - what do I change?</strong><span>Only the expressions. If your form sends full_name instead of name, change {{ $json.body.name }} to {{ $json.body.full_name }} in the Notion and Slack nodes.</span></div><div class="faq-item"><strong>Can it also send the lead an auto-reply email?</strong><span>Yes. Add a Gmail or SMTP node after the webhook that emails {{ $json.body.email }} a thank-you note. Keep it short and human.</span></div><div class="faq-item"><strong>Is a raw webhook secure enough?</strong><span>Use the long random production URL n8n generates and nobody will guess it. For more, set the Webhook node's authentication to Header Auth and add the same secret header to your form backend.</span></div>
