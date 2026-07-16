@@ -1,0 +1,130 @@
+{
+  "name": "AI Blog Draft to WordPress",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Blog draft request",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Topic",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Audience",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Key points (one per line)",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "onReceived"
+      },
+      "id": "f7a8b9c0-0001-4000-8000-000000000001",
+      "name": "Draft Request Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "blog-draft-form"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a senior content writer. Write a blog post draft.\n\nTopic: {{ $json.Topic }}\nAudience: {{ $json.Audience }}\nKey points to cover:\n{{ $json['Key points (one per line)'] }}\n\nFormat your reply EXACTLY like this:\nTITLE: <one compelling title, max 60 characters>\nBODY:\n<the post in clean HTML: a short intro paragraph, one <h2> section per key point with 2-3 paragraphs each, and a closing section with a call to action. No <html> or <body> tags. 800-1200 words. Write plainly - no buzzwords, no fluff.>",
+              "role": "user"
+            }
+          ]
+        }
+      },
+      "id": "f7a8b9c0-0002-4000-8000-000000000002",
+      "name": "Write Draft",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.message.content;\nconst titleMatch = raw.match(/TITLE:\\s*(.+)/);\nconst bodyMatch = raw.match(/BODY:\\s*([\\s\\S]+)/);\nreturn [{ json: {\n  title: titleMatch ? titleMatch[1].trim() : 'Untitled draft',\n  content: bodyMatch ? bodyMatch[1].trim() : raw\n} }];"
+      },
+      "id": "f7a8b9c0-0003-4000-8000-000000000003",
+      "name": "Split Title and Body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.title }}",
+        "additionalFields": {
+          "content": "={{ $json.content }}",
+          "status": "draft"
+        }
+      },
+      "id": "f7a8b9c0-0004-4000-8000-000000000004",
+      "name": "Create WordPress Draft",
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Draft Request Form": {
+      "main": [
+        [
+          {
+            "node": "Write Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Draft": {
+      "main": [
+        [
+          {
+            "node": "Split Title and Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Title and Body": {
+      "main": [
+        [
+          {
+            "node": "Create WordPress Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

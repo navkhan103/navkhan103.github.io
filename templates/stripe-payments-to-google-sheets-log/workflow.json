@@ -1,0 +1,150 @@
+{
+  "name": "Stripe Payments to Google Sheets + Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "charge.succeeded"
+        ]
+      },
+      "id": "d5e6f7a8-0001-4000-8000-000000000001",
+      "name": "Successful Charge",
+      "type": "n8n-nodes-base.stripeTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "s2",
+              "name": "amount",
+              "value": "={{ $json.data.object.amount / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "s3",
+              "name": "currency",
+              "value": "={{ $json.data.object.currency.toUpperCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "s4",
+              "name": "customer",
+              "value": "={{ $json.data.object.billing_details?.email || $json.data.object.receipt_email || 'unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "s5",
+              "name": "description",
+              "value": "={{ $json.data.object.description || '' }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "d5e6f7a8-0002-4000-8000-000000000002",
+      "name": "Extract Payment Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_SPREADSHEET"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "d5e6f7a8-0003-4000-8000-000000000003",
+      "name": "Append to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_CHANNEL"
+        },
+        "text": "=:moneybag: *{{ $json.amount }} {{ $json.currency }}* from {{ $json.customer }}{{ $json.description ? ' - ' + $json.description : '' }}",
+        "otherOptions": {}
+      },
+      "id": "d5e6f7a8-0004-4000-8000-000000000004",
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Successful Charge": {
+      "main": [
+        [
+          {
+            "node": "Extract Payment Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Payment Fields": {
+      "main": [
+        [
+          {
+            "node": "Append to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

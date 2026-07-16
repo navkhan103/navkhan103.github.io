@@ -1,0 +1,146 @@
+{
+  "name": "Website Lead to HubSpot + Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-lead",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      },
+      "id": "b9c0d1e2-0001-4000-8000-000000000001",
+      "name": "Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "new-lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "s2",
+              "name": "firstname",
+              "value": "={{ $json.body.firstname || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "s3",
+              "name": "lastname",
+              "value": "={{ $json.body.lastname || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "s4",
+              "name": "company",
+              "value": "={{ $json.body.company || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "s5",
+              "name": "message",
+              "value": "={{ $json.body.message || '' }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "b9c0d1e2-0002-4000-8000-000000000002",
+      "name": "Map Lead Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "contact",
+        "email": "={{ $json.email }}",
+        "additionalFields": {
+          "firstName": "={{ $json.firstname }}",
+          "lastName": "={{ $json.lastname }}",
+          "companyName": "={{ $json.company }}"
+        },
+        "options": {}
+      },
+      "id": "b9c0d1e2-0003-4000-8000-000000000003",
+      "name": "Upsert HubSpot Contact",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_CHANNEL"
+        },
+        "text": "=:tada: *New lead:* {{ $('Map Lead Fields').item.json.firstname }} {{ $('Map Lead Fields').item.json.lastname }} <mailto:{{ $('Map Lead Fields').item.json.email }}|{{ $('Map Lead Fields').item.json.email }}>{{ $('Map Lead Fields').item.json.company ? ' - ' + $('Map Lead Fields').item.json.company : '' }}\n>{{ $('Map Lead Fields').item.json.message }}",
+        "otherOptions": {}
+      },
+      "id": "b9c0d1e2-0004-4000-8000-000000000004",
+      "name": "Alert Sales in Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Lead Webhook": {
+      "main": [
+        [
+          {
+            "node": "Map Lead Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Lead Fields": {
+      "main": [
+        [
+          {
+            "node": "Upsert HubSpot Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert HubSpot Contact": {
+      "main": [
+        [
+          {
+            "node": "Alert Sales in Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
