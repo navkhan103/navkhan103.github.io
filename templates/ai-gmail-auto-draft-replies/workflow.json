@@ -1,0 +1,105 @@
+{
+  "name": "AI Gmail Auto-Draft Replies",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "in:inbox -category:promotions -category:social"
+        },
+        "options": {}
+      },
+      "id": "a7b8c9d0-0001-4000-8000-000000000001",
+      "name": "New Email",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You draft email replies for me. My name is YOUR NAME. Tone: friendly, direct, no fluff. Sign off with 'Best,\\nYOUR NAME'. If the email asks something you cannot know, draft a polite holding reply. Output only the reply body, no subject line.",
+              "role": "system"
+            },
+            {
+              "content": "=From: {{ $json.from.value[0].address }}\nSubject: {{ $json.subject }}\n\n{{ $json.text }}",
+              "role": "user"
+            }
+          ]
+        }
+      },
+      "id": "a7b8c9d0-0002-4000-8000-000000000002",
+      "name": "Write Draft Reply",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: {{ $('New Email').item.json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.message.content }}",
+        "options": {
+          "threadId": "={{ $('New Email').item.json.threadId }}",
+          "sendTo": "={{ $('New Email').item.json.from.value[0].address }}"
+        }
+      },
+      "id": "a7b8c9d0-0003-4000-8000-000000000003",
+      "name": "Save as Gmail Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "New Email": {
+      "main": [
+        [
+          {
+            "node": "Write Draft Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Draft Reply": {
+      "main": [
+        [
+          {
+            "node": "Save as Gmail Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

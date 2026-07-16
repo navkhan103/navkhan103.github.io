@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://navkhan103.github.io/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/ai-gmail-auto-draft-replies/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/contact-form-to-google-sheets-email/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/daily-google-sheets-kpi-email/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/webhook-lead-capture-to-notion-slack/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/rss-to-ai-slack-digest/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/save-gmail-attachments-to-google-drive/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/web-scraper-to-google-sheets/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/shopify-new-order-slack-alert/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/telegram-ai-chatbot/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/website-uptime-monitor-alerts/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/gmail/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/openai/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/webhook/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/google-sheets/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/gmail/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/schedule/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/rss/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/openai/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/notion/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/slack/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/rss/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/google-drive/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/http-request/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/html/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/shopify/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/telegram/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/if/</loc></url>
 </urlset>

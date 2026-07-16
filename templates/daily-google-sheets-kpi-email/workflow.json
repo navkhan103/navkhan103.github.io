@@ -1,0 +1,115 @@
+{
+  "name": "Daily KPI Email from Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "d0e1f2a3-0001-4000-8000-000000000001",
+      "name": "Every Morning 8am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "id": "d0e1f2a3-0002-4000-8000-000000000002",
+      "name": "Read KPI Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst latest = rows[rows.length - 1];\nconst cells = Object.entries(latest).map(([k, v]) => `<tr><td style=\"padding:6px 14px;border:1px solid #ddd;font-weight:600\">${k}</td><td style=\"padding:6px 14px;border:1px solid #ddd\">${v}</td></tr>`).join('');\nconst html = `<h2>Daily KPI Report</h2><table style=\"border-collapse:collapse;font-family:Arial\">${cells}</table><p style=\"color:#888;font-size:12px\">Sent automatically by n8n.</p>`;\nreturn [{ json: { html } }];"
+      },
+      "id": "d0e1f2a3-0003-4000-8000-000000000003",
+      "name": "Build HTML Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "you@example.com",
+        "subject": "=Daily KPI report - {{ $now.toFormat('ccc d LLL') }}",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "d0e1f2a3-0004-4000-8000-000000000004",
+      "name": "Email Report",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every Morning 8am": {
+      "main": [
+        [
+          {
+            "node": "Read KPI Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read KPI Sheet": {
+      "main": [
+        [
+          {
+            "node": "Build HTML Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build HTML Report": {
+      "main": [
+        [
+          {
+            "node": "Email Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

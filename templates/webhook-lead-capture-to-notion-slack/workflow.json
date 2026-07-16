@@ -1,0 +1,98 @@
+{
+  "name": "Lead Capture to Notion + Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-lead",
+        "options": {}
+      },
+      "id": "f6a7b8c9-0001-4000-8000-000000000001",
+      "name": "Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_DATABASE"
+        },
+        "title": "={{ $json.body.name }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $json.body.email }}"
+            },
+            {
+              "key": "Status|select",
+              "selectValue": "New"
+            }
+          ]
+        }
+      },
+      "id": "f6a7b8c9-0002-4000-8000-000000000002",
+      "name": "Add to Notion CRM",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_CHANNEL"
+        },
+        "text": "=:tada: New lead: *{{ $('Lead Webhook').item.json.body.name }}* ({{ $('Lead Webhook').item.json.body.email }})\n> {{ $('Lead Webhook').item.json.body.message }}",
+        "otherOptions": {}
+      },
+      "id": "f6a7b8c9-0003-4000-8000-000000000003",
+      "name": "Alert Sales Channel",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Lead Webhook": {
+      "main": [
+        [
+          {
+            "node": "Add to Notion CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Notion CRM": {
+      "main": [
+        [
+          {
+            "node": "Alert Sales Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
