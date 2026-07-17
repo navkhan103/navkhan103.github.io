@@ -6,6 +6,18 @@
 <title>n8n Twilio SMS Appointment Reminder Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: text every client an SMS reminder the evening before their appointment, pulled straight from Google Calendar via Twilio. Import the JSON and set up in 15 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/twilio-sms-appointment-reminders/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n Twilio SMS Appointment Reminder Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: text every client an SMS reminder the evening before their appointment, pulled straight from Google Calendar via Twilio. Import the JSON and set up in 15 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/twilio-sms-appointment-reminders/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Twilio SMS Appointment Reminder Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: text every client an SMS reminder the evening before their appointment, pulled straight from Google Calendar via Twilio. Import the JSON and set up in 15 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where does the client's phone number come from?","acceptedAnswer":{"@type":"Answer","text":"The Code node looks for 'phone: +1...' in the event description. If you book via Calendly or a form, store the number there when creating the event - or adapt the regex to wherever yours lives."}},{"@type":"Question","name":"Can clients confirm or cancel by replying?","acceptedAnswer":{"@type":"Answer","text":"Yes - add a Twilio Trigger workflow that receives inbound SMS and updates the calendar event or alerts you in Slack when someone replies CANCEL."}},{"@type":"Question","name":"What does Twilio cost?","acceptedAnswer":{"@type":"Answer","text":"Roughly $0.008 per SMS in the US/Canada plus about $1.15/month for the phone number. A clinic sending 300 reminders a month pays under $4."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}

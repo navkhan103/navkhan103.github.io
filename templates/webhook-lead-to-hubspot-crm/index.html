@@ -6,6 +6,18 @@
 <title>n8n Webhook Lead to HubSpot CRM Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: capture website leads via webhook, create or update the contact in HubSpot CRM, and alert your sales channel in Slack. Import the JSON and set up in 10 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/webhook-lead-to-hubspot-crm/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n Webhook Lead to HubSpot CRM Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: capture website leads via webhook, create or update the contact in HubSpot CRM, and alert your sales channel in Slack. Import the JSON and set up in 10 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/webhook-lead-to-hubspot-crm/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Webhook Lead to HubSpot CRM Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: capture website leads via webhook, create or update the contact in HubSpot CRM, and alert your sales channel in Slack. Import the JSON and set up in 10 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What happens when the same email submits twice?","acceptedAnswer":{"@type":"Answer","text":"The HubSpot node uses create-or-update semantics keyed on email, so the contact is updated rather than duplicated. The Slack alert still fires so sales sees renewed interest."}},{"@type":"Question","name":"Can I set a lead source or lifecycle stage?","acceptedAnswer":{"@type":"Answer","text":"Yes - add the properties in the HubSpot node's additional fields, e.g. lifecyclestage: lead and a custom lead_source property with your form name."}},{"@type":"Question","name":"We use Pipedrive, not HubSpot - same workflow?","acceptedAnswer":{"@type":"Answer","text":"Same shape: swap the HubSpot node for Pipedrive's create-person node (it has a similar find-or-create pattern). Webhook and Slack steps are unchanged."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}

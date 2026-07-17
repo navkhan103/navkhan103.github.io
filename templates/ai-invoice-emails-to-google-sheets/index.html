@@ -6,6 +6,18 @@
 <title>n8n AI Invoice Email to Google Sheets Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: GPT-4o reads incoming invoice and receipt emails and logs vendor, amount, date, and invoice number to Google Sheets - bookkeeping on autopilot. Import the JSON and set up in 15 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/ai-invoice-emails-to-google-sheets/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n AI Invoice Email to Google Sheets Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: GPT-4o reads incoming invoice and receipt emails and logs vendor, amount, date, and invoice number to Google Sheets - bookkeeping on autopilot. Import the JSON and set up in 15 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/ai-invoice-emails-to-google-sheets/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n AI Invoice Email to Google Sheets Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: GPT-4o reads incoming invoice and receipt emails and logs vendor, amount, date, and invoice number to Google Sheets - bookkeeping on autopilot. Import the JSON and set up in 15 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it read PDF attachments too?","acceptedAnswer":{"@type":"Answer","text":"This template reads the email body, which covers most receipts. For PDF invoices, add an Extract From File node (PDF to text) after the trigger and include the text in the AI prompt."}},{"@type":"Question","name":"How do I keep personal email out of the AI?","acceptedAnswer":{"@type":"Answer","text":"The pre-filter only passes emails whose subject or sender matches billing keywords (invoice, receipt, payment, billing). Everything else never reaches the AI step. A dedicated invoices@ alias is even cleaner."}},{"@type":"Question","name":"What about accuracy for accounting?","acceptedAnswer":{"@type":"Answer","text":"Treat the sheet as a draft ledger: the AI is right the vast majority of the time, and the Subject column links back so you can spot-check amounts before filing. It replaces the typing, not the review."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}

@@ -6,6 +6,18 @@
 <title>n8n Lead Capture to Notion + Slack Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: catch leads from any form via webhook, save them to a Notion database, and alert your team in Slack instantly. Import the JSON in 15 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/webhook-lead-capture-to-notion-slack/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n Lead Capture to Notion + Slack Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: catch leads from any form via webhook, save them to a Notion database, and alert your team in Slack instantly. Import the JSON in 15 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/webhook-lead-capture-to-notion-slack/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Lead Capture to Notion + Slack Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: catch leads from any form via webhook, save them to a Notion database, and alert your team in Slack instantly. Import the JSON in 15 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"My form sends different field names - what do I change?","acceptedAnswer":{"@type":"Answer","text":"Only the expressions. If your form sends full_name instead of name, change {{ $json.body.name }} to {{ $json.body.full_name }} in the Notion and Slack nodes."}},{"@type":"Question","name":"Can it also send the lead an auto-reply email?","acceptedAnswer":{"@type":"Answer","text":"Yes. Add a Gmail or SMTP node after the webhook that emails {{ $json.body.email }} a thank-you note. Keep it short and human."}},{"@type":"Question","name":"Is a raw webhook secure enough?","acceptedAnswer":{"@type":"Answer","text":"Use the long random production URL n8n generates and nobody will guess it. For more, set the Webhook node's authentication to Header Auth and add the same secret header to your form backend."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}

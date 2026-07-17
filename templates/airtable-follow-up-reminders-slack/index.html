@@ -6,6 +6,18 @@
 <title>n8n Airtable Follow-up Reminder to Slack Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: every morning, find Airtable CRM contacts whose follow-up date is today and post the list to Slack. Never let a lead go cold. Import the JSON and set up in 10 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/airtable-follow-up-reminders-slack/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n Airtable Follow-up Reminder to Slack Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: every morning, find Airtable CRM contacts whose follow-up date is today and post the list to Slack. Never let a lead go cold. Import the JSON and set up in 10 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/airtable-follow-up-reminders-slack/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Airtable Follow-up Reminder to Slack Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: every morning, find Airtable CRM contacts whose follow-up date is today and post the list to Slack. Never let a lead go cold. Import the JSON and set up in 10 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"My date field is named differently - what do I change?","acceptedAnswer":{"@type":"Answer","text":"Edit the filterByFormula in the Airtable node: replace {Next follow-up} with your exact field name, curly braces included."}},{"@type":"Question","name":"Can it mark contacts as reminded so I don't get them twice?","acceptedAnswer":{"@type":"Answer","text":"Add an Airtable update node after Slack that writes today's date to a Last reminded field, and add that field to the formula filter."}},{"@type":"Question","name":"Can overdue follow-ups look different from today's?","acceptedAnswer":{"@type":"Answer","text":"Yes - the Code node already prefixes overdue entries with a red circle emoji and today's with a yellow one. Adjust the formatting there."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}

@@ -6,6 +6,18 @@
 <title>n8n GitHub Issues to Slack Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: post new GitHub issues and pull requests to Slack with labels, author, and link - better signal than the official integration. Import the JSON and set up in 10 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/github-issues-to-slack/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n GitHub Issues to Slack Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: post new GitHub issues and pull requests to Slack with labels, author, and link - better signal than the official integration. Import the JSON and set up in 10 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/github-issues-to-slack/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n GitHub Issues to Slack Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: post new GitHub issues and pull requests to Slack with labels, author, and link - better signal than the official integration. Import the JSON and set up in 10 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can it watch several repositories?","acceptedAnswer":{"@type":"Answer","text":"Duplicate the trigger node per repo and feed them into the same filter, or use an organization-level webhook with a plain Webhook node."}},{"@type":"Question","name":"Can it alert only on the 'bug' label?","acceptedAnswer":{"@type":"Answer","text":"Yes - uncomment the label filter line in the Code node and set your label name. Everything else passes through silently."}},{"@type":"Question","name":"What about issue comments or merged PRs?","acceptedAnswer":{"@type":"Answer","text":"Add those event names to the GitHub Trigger and extend the Code node - the payload shapes are similar (comment.body, pull_request.merged)."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}

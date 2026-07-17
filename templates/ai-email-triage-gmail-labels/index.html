@@ -6,6 +6,18 @@
 <title>n8n AI Gmail Triage and Auto-Label Workflow Template (Free)</title>
 <meta name="description" content="Free n8n workflow template: GPT-4o classifies every incoming Gmail as urgent, customer, invoice, or newsletter - applies the label and pings Slack for urgent ones. Import the JSON and set up in 15 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/ai-email-triage-gmail-labels/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n AI Gmail Triage and Auto-Label Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: GPT-4o classifies every incoming Gmail as urgent, customer, invoice, or newsletter - applies the label and pings Slack for urgent ones. Import the JSON and set up in 15 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/ai-email-triage-gmail-labels/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n AI Gmail Triage and Auto-Label Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: GPT-4o classifies every incoming Gmail as urgent, customer, invoice, or newsletter - applies the label and pings Slack for urgent ones. Import the JSON and set up in 15 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my email content sent to OpenAI?","acceptedAnswer":{"@type":"Answer","text":"The subject and the first 2000 characters of the body are sent for classification. If that's a concern, run the same prompt against a local model via Ollama - swap the OpenAI node for a local LLM node; the rest is unchanged."}},{"@type":"Question","name":"Can I add my own categories?","acceptedAnswer":{"@type":"Answer","text":"Yes - edit the category list in the prompt and add the label mapping in the Code node. Keep categories mutually exclusive and under about seven for reliable one-word answers."}},{"@type":"Question","name":"What does this cost to run?","acceptedAnswer":{"@type":"Answer","text":"With gpt-4o-mini, classifying 100 emails a day costs a few cents a month - less than any email triage SaaS by orders of magnitude."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
