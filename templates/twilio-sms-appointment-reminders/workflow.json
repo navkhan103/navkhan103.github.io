@@ -1,0 +1,116 @@
+{
+  "name": "SMS Appointment Reminders",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 18 * * *"
+            }
+          ]
+        }
+      },
+      "id": "d1e2f3a4-0001-4000-8000-000000000001",
+      "name": "Daily 6pm",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_CALENDAR"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $now.plus({ days: 1 }).startOf('day').toISO() }}",
+          "timeMax": "={{ $now.plus({ days: 1 }).endOf('day').toISO() }}",
+          "singleEvents": true
+        }
+      },
+      "id": "d1e2f3a4-0002-4000-8000-000000000002",
+      "name": "Tomorrow's Appointments",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nfor (const i of $input.all()) {\n  const e = i.json;\n  const match = `${e.description || ''} ${e.location || ''}`.match(/phone:\\s*(\\+?[0-9][0-9 ()-]{7,})/i);\n  if (!match || !e.start?.dateTime) continue; // no phone found - skip\n  const time = new Date(e.start.dateTime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });\n  out.push({ json: {\n    to: match[1].replace(/[ ()-]/g, ''),\n    body: `Reminder: your appointment \\\"${e.summary}\\\" is tomorrow at ${time}. Reply CANCEL if you can't make it.`\n  } });\n}\nreturn out;"
+      },
+      "id": "d1e2f3a4-0003-4000-8000-000000000003",
+      "name": "Build Reminder Texts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "from": "REPLACE_WITH_YOUR_TWILIO_NUMBER",
+        "to": "={{ $json.to }}",
+        "message": "={{ $json.body }}",
+        "options": {}
+      },
+      "id": "d1e2f3a4-0004-4000-8000-000000000004",
+      "name": "Send SMS",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Daily 6pm": {
+      "main": [
+        [
+          {
+            "node": "Tomorrow's Appointments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tomorrow's Appointments": {
+      "main": [
+        [
+          {
+            "node": "Build Reminder Texts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Reminder Texts": {
+      "main": [
+        [
+          {
+            "node": "Send SMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

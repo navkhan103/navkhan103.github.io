@@ -1,0 +1,99 @@
+{
+  "name": "Calendly Bookings to Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "invitee.created"
+        ]
+      },
+      "id": "c6d7e8f9-0001-4000-8000-000000000001",
+      "name": "New Booking",
+      "type": "n8n-nodes-base.calendlyTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const p = $input.first().json.payload || $input.first().json;\nconst qa = (p.questions_and_answers || []).map(x => `${x.question}: ${x.answer}`).join('\\n');\nreturn [{ json: {\n  name: p.name || `${p.first_name || ''} ${p.last_name || ''}`.trim(),\n  email: p.email || '',\n  meeting: p.scheduled_event?.name || 'Meeting',\n  start: p.scheduled_event?.start_time || '',\n  notes: qa || 'No screening answers'\n} }];"
+      },
+      "id": "c6d7e8f9-0002-4000-8000-000000000002",
+      "name": "Extract Invitee",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_DATABASE"
+        },
+        "title": "={{ $json.name }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $json.email }}"
+            },
+            {
+              "key": "Meeting|rich_text",
+              "textContent": "={{ $json.meeting }}"
+            },
+            {
+              "key": "Date|date",
+              "date": "={{ $json.start }}"
+            },
+            {
+              "key": "Notes|rich_text",
+              "textContent": "={{ $json.notes }}"
+            }
+          ]
+        }
+      },
+      "id": "c6d7e8f9-0003-4000-8000-000000000003",
+      "name": "Create Notion Page",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "New Booking": {
+      "main": [
+        [
+          {
+            "node": "Extract Invitee",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Invitee": {
+      "main": [
+        [
+          {
+            "node": "Create Notion Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

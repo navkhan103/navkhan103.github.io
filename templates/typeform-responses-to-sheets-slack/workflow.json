@@ -1,0 +1,119 @@
+{
+  "name": "Typeform to Sheets + Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "formId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_FORM"
+        }
+      },
+      "id": "e2f3a4b5-0001-4000-8000-000000000001",
+      "name": "New Typeform Response",
+      "type": "n8n-nodes-base.typeformTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json;\nconst row = { Timestamp: new Date().toISOString() };\nfor (const [key, value] of Object.entries(j)) {\n  if (key === 'submitted_at' || key === 'form_id' || key === 'token') continue;\n  row[key] = Array.isArray(value) ? value.join(', ') : String(value ?? '');\n}\nreturn [{ json: row }];"
+      },
+      "id": "e2f3a4b5-0002-4000-8000-000000000002",
+      "name": "Flatten Answers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_SPREADSHEET"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "e2f3a4b5-0003-4000-8000-000000000003",
+      "name": "Append to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_CHANNEL"
+        },
+        "text": "=:inbox_tray: *New form response*\n{{ Object.entries($json).filter(([k]) => k !== 'Timestamp').slice(0, 6).map(([k, v]) => `*${k}:* ${String(v).slice(0, 80)}`).join('\\n') }}",
+        "otherOptions": {}
+      },
+      "id": "e2f3a4b5-0004-4000-8000-000000000004",
+      "name": "Post Summary to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "New Typeform Response": {
+      "main": [
+        [
+          {
+            "node": "Flatten Answers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten Answers": {
+      "main": [
+        [
+          {
+            "node": "Append to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Post Summary to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

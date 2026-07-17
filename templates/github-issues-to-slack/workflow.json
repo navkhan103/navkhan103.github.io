@@ -1,0 +1,92 @@
+{
+  "name": "GitHub Issues and PRs to Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "owner": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_OWNER"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_REPO"
+        },
+        "events": [
+          "issues",
+          "pull_request"
+        ],
+        "options": {}
+      },
+      "id": "f3a4b5c6-0001-4000-8000-000000000001",
+      "name": "GitHub Events",
+      "type": "n8n-nodes-base.githubTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const p = $input.first().json.body || $input.first().json;\nif (p.action !== 'opened') return []; // only new items\nconst item = p.issue || p.pull_request;\nif (!item) return [];\n// Optional filters - uncomment to use:\n// if (!(item.labels || []).some(l => l.name === 'bug')) return [];\n// if (item.user.login.endsWith('[bot]')) return [];\nreturn [{ json: {\n  kind: p.pull_request ? 'PR' : 'Issue',\n  title: item.title,\n  url: item.html_url,\n  author: item.user.login,\n  labels: (item.labels || []).map(l => l.name).join(', ') || 'none',\n  preview: (item.body || '').replace(/\\r?\\n/g, ' ').slice(0, 140)\n} }];"
+      },
+      "id": "f3a4b5c6-0002-4000-8000-000000000002",
+      "name": "Filter and Format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_CHANNEL"
+        },
+        "text": "=:octopus: *New {{ $json.kind }}:* <{{ $json.url }}|{{ $json.title }}>\nby {{ $json.author }} - labels: {{ $json.labels }}\n>{{ $json.preview }}",
+        "otherOptions": {}
+      },
+      "id": "f3a4b5c6-0003-4000-8000-000000000003",
+      "name": "Post to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "GitHub Events": {
+      "main": [
+        [
+          {
+            "node": "Filter and Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter and Format": {
+      "main": [
+        [
+          {
+            "node": "Post to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

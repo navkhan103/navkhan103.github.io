@@ -3,36 +3,56 @@
   <url><loc>https://navkhan103.github.io/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/ai-blog-draft-to-wordpress/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/ai-gmail-auto-draft-replies/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/ai-email-triage-gmail-labels/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/ai-invoice-emails-to-google-sheets/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/ai-lead-scoring-to-google-sheets/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/airtable-follow-up-reminders-slack/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/backup-n8n-workflows-to-github/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/calendly-bookings-to-notion-crm/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/contact-form-to-google-sheets-email/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/google-calendar-daily-agenda-slack/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/daily-google-sheets-kpi-email/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/github-issues-to-slack/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/google-drive-invoice-folder-to-dropbox-backup/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/webhook-lead-capture-to-notion-slack/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/rss-announcements-to-discord/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/rss-to-ai-slack-digest/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/save-gmail-attachments-to-google-drive/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/web-scraper-to-google-sheets/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/shopify-new-order-slack-alert/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/twilio-sms-appointment-reminders/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/stripe-payments-to-google-sheets-log/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/telegram-ai-chatbot/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/typeform-responses-to-sheets-slack/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/webhook-lead-to-hubspot-crm/</loc></url>
   <url><loc>https://navkhan103.github.io/templates/website-uptime-monitor-alerts/</loc></url>
+  <url><loc>https://navkhan103.github.io/templates/youtube-new-video-crosspost/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/openai/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/wordpress/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/gmail/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/airtable/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/slack/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/webhook/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/email-imap-/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/google-sheets/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/webhook/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/airtable/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/n8n-api/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/github/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/calendly/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/notion/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/google-calendar/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/schedule/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/notion/</loc></url>
-  <url><loc>https://navkhan103.github.io/apps/rss/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/google-drive/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/dropbox/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/rss/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/discord/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/http-request/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/html/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/shopify/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/twilio/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/stripe/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/telegram/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/typeform/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/hubspot/</loc></url>
   <url><loc>https://navkhan103.github.io/apps/if/</loc></url>
+  <url><loc>https://navkhan103.github.io/apps/youtube/</loc></url>
 </urlset>
