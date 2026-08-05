@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>n8n AI Lead Scoring Workflow Template (Free)</title>
-<meta name="description" content="Free n8n workflow template: score every inbound lead 1-10 with GPT-4o based on fit and intent, log to Google Sheets, and alert Slack when a hot lead arrives. Import the JSON and set up in 15 minutes.">
+<meta name="description" content="Free n8n workflow template: score every inbound lead 1-10 with GPT-5.6 based on fit and intent, log to Google Sheets, and alert Slack when a hot lead arrives. Import the JSON and set up in 15 minutes.">
 <link rel="canonical" href="https://navkhan103.github.io/templates/ai-lead-scoring-to-google-sheets/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WorkflowForge">
 <meta property="og:title" content="n8n AI Lead Scoring Workflow Template (Free)">
-<meta property="og:description" content="Free n8n workflow template: score every inbound lead 1-10 with GPT-4o based on fit and intent, log to Google Sheets, and alert Slack when a hot lead arrives. Import the JSON and set up in 15 minutes.">
+<meta property="og:description" content="Free n8n workflow template: score every inbound lead 1-10 with GPT-5.6 based on fit and intent, log to Google Sheets, and alert Slack when a hot lead arrives. Import the JSON and set up in 15 minutes.">
 <meta property="og:url" content="https://navkhan103.github.io/templates/ai-lead-scoring-to-google-sheets/">
 <meta property="og:image" content="https://navkhan103.github.io/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="n8n AI Lead Scoring Workflow Template (Free)">
-<meta name="twitter:description" content="Free n8n workflow template: score every inbound lead 1-10 with GPT-4o based on fit and intent, log to Google Sheets, and alert Slack when a hot lead arrives. Import the JSON and set up in 15 minutes.">
+<meta name="twitter:description" content="Free n8n workflow template: score every inbound lead 1-10 with GPT-5.6 based on fit and intent, log to Google Sheets, and alert Slack when a hot lead arrives. Import the JSON and set up in 15 minutes.">
 <meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is AI scoring?","acceptedAnswer":{"@type":"Answer","text":"It's a triage layer, not an oracle - it reliably separates 'enterprise buyer describing a real problem' from 'student asking for free access', which is 80% of the value. Tune the profile prompt after your first 50 leads."}},{"@type":"Question","name":"What does it cost per lead?","acceptedAnswer":{"@type":"Answer","text":"A score with gpt-4o-mini costs a fraction of a cent; with gpt-4o about a cent. Even at heavy volume it's coffee money."}},{"@type":"Question","name":"Can it enrich the lead with company data first?","acceptedAnswer":{"@type":"Answer","text":"Yes - insert an HTTP Request node before the AI step calling an enrichment API (Clearbit, Apollo), and include the result in the prompt for sharper scores."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is AI scoring?","acceptedAnswer":{"@type":"Answer","text":"It's a triage layer, not an oracle - it reliably separates 'enterprise buyer describing a real problem' from 'student asking for free access', which is 80% of the value. Tune the profile prompt after your first 50 leads."}},{"@type":"Question","name":"What does it cost per lead?","acceptedAnswer":{"@type":"Answer","text":"A score with gpt-5.6-luna costs a fraction of a cent; with gpt-5.6-terra about a cent. Even at heavy volume it's coffee money."}},{"@type":"Question","name":"Can it enrich the lead with company data first?","acceptedAnswer":{"@type":"Answer","text":"Yes - insert an HTTP Request node before the AI step calling an enrichment API (Clearbit, Apollo), and include the result in the prompt for sharper scores."}}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0B1D33;color:#E8EFF7;line-height:1.6}
@@ -66,7 +66,7 @@ footer a{color:#8FA8C2}
 <article class="wrap">
   <h1>AI Lead Scoring with GPT to Google Sheets</h1>
   <div class="meta"><span class="badge">Intermediate</span> &nbsp; Apps: Webhook, OpenAI, Google Sheets, Slack &nbsp;·&nbsp; Setup: 15 minutes</div>
-  <p>When 40 leads a week come in, sales triages by gut and recency - and the enterprise prospect who wrote two thoughtful sentences at 2am waits behind 'pls send price'. This workflow has GPT-4o read each lead's company, role, and message against YOUR ideal customer profile, score it 1-10 with a reason, and route: 8+ pings Slack immediately, everything else just files into the sheet for batch follow-up.</p>
+  <p>When 40 leads a week come in, sales triages by gut and recency - and the enterprise prospect who wrote two thoughtful sentences at 2am waits behind 'pls send price'. This workflow has GPT-5.6 read each lead's company, role, and message against YOUR ideal customer profile, score it 1-10 with a reason, and route: 8+ pings Slack immediately, everything else just files into the sheet for batch follow-up.</p>
   <div class="dl">
     <a class="btn" href="workflow.json" download="ai-lead-scoring-to-google-sheets.json">Download workflow JSON (free)</a>
     <a class="btn ghost" href="#setup">Setup guide</a>
@@ -81,7 +81,7 @@ footer a{color:#8FA8C2}
     <a class="btn" href="https://www.hostinger.com?REFERRALCODE=ZHVNAVKHADAZ" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
   </div>
   <h2>FAQ</h2>
-  <div class="faq-item"><strong>How accurate is AI scoring?</strong><span>It's a triage layer, not an oracle - it reliably separates 'enterprise buyer describing a real problem' from 'student asking for free access', which is 80% of the value. Tune the profile prompt after your first 50 leads.</span></div><div class="faq-item"><strong>What does it cost per lead?</strong><span>A score with gpt-4o-mini costs a fraction of a cent; with gpt-4o about a cent. Even at heavy volume it's coffee money.</span></div><div class="faq-item"><strong>Can it enrich the lead with company data first?</strong><span>Yes - insert an HTTP Request node before the AI step calling an enrichment API (Clearbit, Apollo), and include the result in the prompt for sharper scores.</span></div>
+  <div class="faq-item"><strong>How accurate is AI scoring?</strong><span>It's a triage layer, not an oracle - it reliably separates 'enterprise buyer describing a real problem' from 'student asking for free access', which is 80% of the value. Tune the profile prompt after your first 50 leads.</span></div><div class="faq-item"><strong>What does it cost per lead?</strong><span>A score with gpt-5.6-luna costs a fraction of a cent; with gpt-5.6-terra about a cent. Even at heavy volume it's coffee money.</span></div><div class="faq-item"><strong>Can it enrich the lead with company data first?</strong><span>Yes - insert an HTTP Request node before the AI step calling an enrichment API (Clearbit, Apollo), and include the result in the prompt for sharper scores.</span></div>
   <div class="cta-box">
     <h3>Want the workflows this one is a warm-up for?</h3>
     <p>The Mega Bundle packs both WorkflowForge Pro volumes &mdash; 32 production-grade workflows: automations (cart recovery, lead scoring, invoice extraction) and AI agents (support agent, calendar assistant, research agent), each with a setup guide. $39 for both, instant download.</p>

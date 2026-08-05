@@ -3,6 +3,54 @@
   "nodes": [
     {
       "parameters": {
+        "content": "## Save Gmail Attachments to Google Drive Automatically\n\nStop downloading and re-uploading email attachments by hand - every attachment lands in the right Drive folder within a minute of arriving.\n\n**Setup time:** 10 minutes  ·  **Level:** Beginner\n\n**You'll need accounts/credentials for:** Gmail, Google Drive\n\n**Replace these before running:**\n- `REPLACE_WITH_FOLDER`\n\n**Setup steps:**\n1. Connect your Gmail account in the Gmail Trigger node (OAuth, two clicks).\n2. In the trigger's filters, keep 'has:attachment' - or narrow it, e.g. 'from:billing@supplier.com has:attachment'.\n3. Connect Google Drive in the upload node and pick your destination folder.\n4. Activate the workflow. Send yourself a test email with an attachment to confirm.\n\nFree templates and updates: navkhan103.github.io",
+        "height": 596,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **New Email With Attachment**.\n\n1. A Gmail Trigger polls your inbox every minute for new emails that have attachments.\n2. The trigger downloads each attachment as binary data.\n3. A Google Drive node uploads every attachment into the folder you choose, keeping the original filename.",
+        "height": 322,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        596
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read and AI nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 400,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        958
+      ]
+    },
+    {
+      "parameters": {
         "pollTimes": {
           "item": [
             {

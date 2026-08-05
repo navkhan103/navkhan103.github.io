@@ -3,6 +3,54 @@
   "nodes": [
     {
       "parameters": {
+        "content": "## Website Lead to HubSpot Contact + Slack Alert\n\nEvery website lead becomes a HubSpot contact and a Slack ping the second the form is submitted - no CSV imports, no copy-paste, no Zapier bill.\n\n**Setup time:** 10 minutes  ·  **Level:** Beginner\n\n**You'll need accounts/credentials for:** Webhook, HubSpot, Slack\n\n**Replace these before running:**\n- `REPLACE_WITH_CHANNEL`\n\n**Setup steps:**\n1. Open the Webhook node and copy the production URL into your website form's action (fields: email, firstname, lastname, company, message).\n2. Connect HubSpot with a private app token (crm.objects.contacts scopes: read + write).\n3. Connect Slack and choose your #sales or #leads channel.\n4. Activate the workflow and submit a test lead - check HubSpot Contacts and the Slack alert.\n\nFree templates and updates: navkhan103.github.io",
+        "height": 596,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **Lead Webhook**.\n\n1. A Webhook node gives you a URL - point your website form's POST at it.\n2. A Set node maps the form fields to HubSpot properties: email, first name, last name, company, message.\n3. A HubSpot node upserts the contact (create if new, update if the email exists).\n4. A Slack node alerts your sales channel with the lead's details and a link to the contact.",
+        "height": 348,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        596
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read and AI nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 400,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        984
+      ]
+    },
+    {
+      "parameters": {
         "httpMethod": "POST",
         "path": "new-lead",
         "responseMode": "onReceived",

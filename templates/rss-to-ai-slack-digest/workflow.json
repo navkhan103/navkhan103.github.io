@@ -3,6 +3,54 @@
   "nodes": [
     {
       "parameters": {
+        "content": "## RSS to AI-Summarized Slack Digest\n\nReplace 30 minutes of morning news-skimming with an AI-written digest of your industry feeds, delivered to Slack before you sit down.\n\n**Setup time:** 15 minutes  ·  **Level:** Intermediate\n\n**You'll need accounts/credentials for:** Schedule, RSS, OpenAI, Slack\n\n**Replace these before running:**\n- `REPLACE_WITH_CHANNEL`\n\n**Setup steps:**\n1. Open the RSS Read node and set your feed URL (any RSS/Atom feed works).\n2. Add your OpenAI API credential to the AI node - or swap it for the Anthropic/Google node.\n3. Connect Slack and pick your channel in the Slack node.\n4. Adjust the schedule time to your morning, then activate.\n5. Run it once manually to see your first digest.\n\nFree templates and updates: navkhan103.github.io",
+        "height": 618,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **Weekday Mornings**.\n\n1. A Schedule Trigger fires every weekday morning at 7:30.\n2. An RSS Read node pulls the latest items from your chosen feed.\n3. A Code node keeps only items published in the last 24 hours and trims them to title + snippet.\n4. An AI node (OpenAI, or swap for Claude/Gemini) writes a short digest: top 5 stories, one line each, with links.\n5. A Slack node posts the digest to your channel.",
+        "height": 374,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        618
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read and AI nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 400,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        1032
+      ]
+    },
+    {
+      "parameters": {
         "rule": {
           "interval": [
             {
@@ -32,7 +80,10 @@
       "position": [
         220,
         0
-      ]
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -52,7 +103,7 @@
         "modelId": {
           "__rl": true,
           "mode": "list",
-          "value": "gpt-4o-mini"
+          "value": "gpt-5.6-luna"
         },
         "messages": {
           "values": [
@@ -70,7 +121,10 @@
       "position": [
         660,
         0
-      ]
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
