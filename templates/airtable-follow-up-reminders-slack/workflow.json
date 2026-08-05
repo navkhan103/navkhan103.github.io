@@ -1,0 +1,172 @@
+{
+  "name": "Airtable Follow-up Reminders to Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Airtable CRM Follow-up Reminders in Slack\n\nYour Airtable CRM taps you on the shoulder each morning: here are the people you promised to follow up with today, with notes.\n\n**Setup time:** 10 minutes  ·  **Level:** Beginner\n\n**You'll need accounts/credentials for:** Airtable, Slack\n\n**Replace these before running:**\n- `REPLACE_WITH_YOUR_BASE`\n- `REPLACE_WITH_YOUR_TABLE`\n- `REPLACE_WITH_CHANNEL`\n\n**Setup steps:**\n1. Connect Airtable with a personal access token (data.records:read scope on your base).\n2. Select your base and table in the Airtable node, and adjust the field names in the formula to match your columns (the template expects: Name, Company, Next follow-up, Status, Notes).\n3. Connect Slack and pick your channel or personal DM.\n4. Activate the workflow - reminders start tomorrow morning.\n\nFree templates and updates: navkhan103.github.io",
+        "height": 640,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **Weekday Mornings 8:30**.\n\n1. A Schedule Trigger fires each weekday at 8:30.\n2. An Airtable node searches your CRM table with a formula: follow-up date is today or earlier, status not closed.\n3. A Code node formats each contact into a line with name, company, and your last note.\n4. A Slack node posts the follow-up list - or stays silent if there's nobody due.",
+        "height": 348,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read and AI nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 400,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        1028
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 8 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "a8b9c0d1-0001-4000-8000-000000000001",
+      "name": "Weekday Mornings 8:30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_BASE"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_YOUR_TABLE"
+        },
+        "filterByFormula": "AND(IS_BEFORE({Next follow-up}, DATEADD(TODAY(), 1, 'days')), {Status} != 'Closed')",
+        "options": {}
+      },
+      "id": "a8b9c0d1-0002-4000-8000-000000000002",
+      "name": "Find Due Follow-ups",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "const records = $input.all().map(i => i.json);\nif (!records.length || !records[0].id) {\n  return []; // nothing due - stay silent\n}\nconst today = new Date().toISOString().slice(0, 10);\nconst lines = records.map(r => {\n  const f = r.fields || r;\n  const due = (f['Next follow-up'] || '').slice(0, 10);\n  const flag = due < today ? ':red_circle: OVERDUE' : ':large_yellow_circle: today';\n  const note = f.Notes ? ` - _${String(f.Notes).slice(0, 80)}_` : '';\n  return `- ${flag} *${f.Name || 'Unnamed'}*${f.Company ? ` (${f.Company})` : ''}${note}`;\n});\nreturn [{ json: { message: `:telephone_receiver: *Follow-ups due (${lines.length})*\\n${lines.join('\\n')}` } }];"
+      },
+      "id": "a8b9c0d1-0003-4000-8000-000000000003",
+      "name": "Format Reminder List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_CHANNEL"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {}
+      },
+      "id": "a8b9c0d1-0004-4000-8000-000000000004",
+      "name": "Post to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Weekday Mornings 8:30": {
+      "main": [
+        [
+          {
+            "node": "Find Due Follow-ups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Due Follow-ups": {
+      "main": [
+        [
+          {
+            "node": "Format Reminder List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Reminder List": {
+      "main": [
+        [
+          {
+            "node": "Post to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

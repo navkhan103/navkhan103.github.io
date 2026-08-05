@@ -1,0 +1,155 @@
+{
+  "name": "RSS Announcements to Discord",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## RSS / Blog Announcements Auto-Posted to Discord\n\nYour Discord community hears about every new blog post, release note, or status update the hour it ships - without a mod copy-pasting links.\n\n**Setup time:** 5 minutes  ·  **Level:** Beginner\n\n**You'll need accounts/credentials for:** RSS, Discord\n\n**Replace these before running:**\n- `REPLACE_WITH_YOUR_FEED`\n\n**Setup steps:**\n1. Paste your feed URL into the RSS node (e.g. https://yourblog.com/rss.xml or a GitHub releases.atom).\n2. In Discord: channel settings > Integrations > Webhooks > New Webhook, copy the URL into the Discord node's webhook credential.\n3. Activate the workflow. New feed items appear in the channel within the hour.\n\nFree templates and updates: navkhan103.github.io",
+        "height": 574,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **Every Hour**.\n\n1. A Schedule Trigger polls every hour.\n2. An RSS node reads the feed (your blog, a GitHub releases feed, a status page - anything with RSS).\n3. A Code node keeps only items published since the last hour, so nothing posts twice.\n4. A Discord node sends each new item to your channel via webhook: title, link, and a one-line summary.",
+        "height": 348,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        574
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read and AI nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 400,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        962
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "c0d1e2f3-0001-4000-8000-000000000001",
+      "name": "Every Hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://REPLACE_WITH_YOUR_FEED/rss.xml",
+        "options": {}
+      },
+      "id": "c0d1e2f3-0002-4000-8000-000000000002",
+      "name": "Read Feed",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "const cutoff = Date.now() - 60 * 60 * 1000; // last hour\nconst fresh = $input.all()\n  .map(i => i.json)\n  .filter(item => new Date(item.isoDate || item.pubDate).getTime() > cutoff);\nreturn fresh.map(item => ({ json: {\n  title: item.title,\n  link: item.link,\n  snippet: (item.contentSnippet || '').slice(0, 180)\n} }));"
+      },
+      "id": "c0d1e2f3-0003-4000-8000-000000000003",
+      "name": "Only New Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=**{{ $json.title }}**\n{{ $json.snippet }}\n{{ $json.link }}"
+      },
+      "id": "c0d1e2f3-0004-4000-8000-000000000004",
+      "name": "Post to Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every Hour": {
+      "main": [
+        [
+          {
+            "node": "Read Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Feed": {
+      "main": [
+        [
+          {
+            "node": "Only New Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only New Items": {
+      "main": [
+        [
+          {
+            "node": "Post to Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

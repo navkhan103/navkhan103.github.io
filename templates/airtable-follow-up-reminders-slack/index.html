@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Airtable Follow-up Reminder to Slack Workflow Template (Free)</title>
+<meta name="description" content="Free n8n workflow template: every morning, find Airtable CRM contacts whose follow-up date is today and post the list to Slack. Never let a lead go cold. Import the JSON and set up in 10 minutes.">
+<link rel="canonical" href="https://navkhan103.github.io/templates/airtable-follow-up-reminders-slack/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="n8n Airtable Follow-up Reminder to Slack Workflow Template (Free)">
+<meta property="og:description" content="Free n8n workflow template: every morning, find Airtable CRM contacts whose follow-up date is today and post the list to Slack. Never let a lead go cold. Import the JSON and set up in 10 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/airtable-follow-up-reminders-slack/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Airtable Follow-up Reminder to Slack Workflow Template (Free)">
+<meta name="twitter:description" content="Free n8n workflow template: every morning, find Airtable CRM contacts whose follow-up date is today and post the list to Slack. Never let a lead go cold. Import the JSON and set up in 10 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"My date field is named differently - what do I change?","acceptedAnswer":{"@type":"Answer","text":"Edit the filterByFormula in the Airtable node: replace {Next follow-up} with your exact field name, curly braces included."}},{"@type":"Question","name":"Can it mark contacts as reminded so I don't get them twice?","acceptedAnswer":{"@type":"Answer","text":"Add an Airtable update node after Slack that writes today's date to a Last reminded field, and add that field to the formula filter."}},{"@type":"Question","name":"Can overdue follow-ups look different from today's?","acceptedAnswer":{"@type":"Answer","text":"Yes - the Code node already prefixes overdue entries with a red circle emoji and today's with a yellow one. Adjust the formatting there."}}]}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0B1D33;color:#E8EFF7;line-height:1.6}
+a{color:#FFB020;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid #1d3a5c;padding:16px 0}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:800;color:#fff}.logo span{color:#FFB020}
+nav a{margin-left:20px;font-size:15px;color:#C9D6E5}
+.hero{padding:64px 0 40px;text-align:center}
+.hero h1{font-size:40px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:14px}
+.hero h1 em{color:#FFB020;font-style:normal}
+.hero p{font-size:18px;color:#C9D6E5;max-width:640px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;padding:32px 0 56px}
+.card{background:#12304F;border:1px solid #29496e;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.card h3{color:#fff;font-size:18px;line-height:1.3}
+.card .apps{font-size:13px;color:#8FA8C2}
+.card p{font-size:14px;color:#C9D6E5;flex:1}
+.badge{display:inline-block;background:rgba(255,176,32,.12);color:#FFB020;border:1px solid rgba(255,176,32,.4);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}
+.btn{display:inline-block;background:#FFB020;color:#0B1D33;font-weight:700;padding:12px 22px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:#FFB020;border:2px solid #FFB020}
+article{padding:48px 0 24px;max-width:760px;margin:0 auto}
+article h1{font-size:32px;color:#fff;line-height:1.2;margin-bottom:10px}
+article .meta{color:#8FA8C2;font-size:14px;margin-bottom:22px}
+article h2{font-size:22px;color:#fff;margin:34px 0 12px}
+article p,article li{color:#C9D6E5;font-size:16px}
+article ol,article ul{padding-left:22px;display:grid;gap:8px;margin:10px 0}
+.cta-box{background:#12304F;border:1px solid #FFB020;border-radius:14px;padding:24px;margin:30px 0;text-align:center}
+.cta-box h3{color:#fff;margin-bottom:8px}.cta-box p{margin-bottom:14px}
+.dl{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}
+.faq-item{margin-bottom:16px}.faq-item strong{color:#fff;display:block;margin-bottom:4px}
+footer{border-top:1px solid #1d3a5c;padding:28px 0;margin-top:40px;font-size:13px;color:#8FA8C2}
+footer a{color:#8FA8C2}
+.crumbs{font-size:13px;color:#8FA8C2;padding-top:24px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="/">Workflow<span>Forge</span></a>
+  <nav><a href="/">Templates</a><a href="https://www.fiverr.com/realkhan103/build-n8n-automations-and-ai-agents-that-run-your-business-on-autopilot" rel="nofollow sponsored">Hire a builder</a></nav>
+</div></header>
+
+<div class="wrap"><div class="crumbs"><a href="/">Templates</a> / Airtable CRM Follow-up Reminders in Slack</div></div>
+<article class="wrap">
+  <h1>Airtable CRM Follow-up Reminders in Slack</h1>
+  <div class="meta"><span class="badge">Beginner</span> &nbsp; Apps: Airtable, Slack &nbsp;·&nbsp; Setup: 10 minutes</div>
+  <p>Every deal that dies quietly dies the same way: 'I'll follow up next week' - and next week never fires. If your CRM is an Airtable base, this workflow checks it every morning for records whose Next follow-up date is today (or overdue) and posts the list to Slack with your notes, so following up becomes a checkbox instead of a memory feat.</p>
+  <div class="dl">
+    <a class="btn" href="workflow.json" download="airtable-follow-up-reminders-slack.json">Download workflow JSON (free)</a>
+    <a class="btn ghost" href="#setup">Setup guide</a>
+  </div>
+  <h2>What this workflow does</h2>
+  <ol><li>A Schedule Trigger fires each weekday at 8:30.</li><li>An Airtable node searches your CRM table with a formula: follow-up date is today or earlier, status not closed.</li><li>A Code node formats each contact into a line with name, company, and your last note.</li><li>A Slack node posts the follow-up list - or stays silent if there's nobody due.</li></ol>
+  <h2 id="setup">Setup guide</h2>
+  <ol><li>Import the JSON into n8n (Workflows &gt; Import from File).</li><li>Connect Airtable with a personal access token (data.records:read scope on your base).</li><li>Select your base and table in the Airtable node, and adjust the field names in the formula to match your columns (the template expects: Name, Company, Next follow-up, Status, Notes).</li><li>Connect Slack and pick your channel or personal DM.</li><li>Activate the workflow - reminders start tomorrow morning.</li></ol>
+  <div class="cta-box">
+    <h3>Want this running 24/7?</h3>
+    <p>Self-host n8n on a cheap VPS and this workflow runs around the clock for less than a coffee a month.</p>
+    <a class="btn" href="https://www.hostinger.com?REFERRALCODE=ZHVNAVKHADAZ" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
+  </div>
+  <h2>FAQ</h2>
+  <div class="faq-item"><strong>My date field is named differently - what do I change?</strong><span>Edit the filterByFormula in the Airtable node: replace {Next follow-up} with your exact field name, curly braces included.</span></div><div class="faq-item"><strong>Can it mark contacts as reminded so I don't get them twice?</strong><span>Add an Airtable update node after Slack that writes today's date to a Last reminded field, and add that field to the formula filter.</span></div><div class="faq-item"><strong>Can overdue follow-ups look different from today's?</strong><span>Yes - the Code node already prefixes overdue entries with a red circle emoji and today's with a yellow one. Adjust the formatting there.</span></div>
+  <div class="cta-box">
+    <h3>Want the workflows this one is a warm-up for?</h3>
+    <p>The Mega Bundle packs both WorkflowForge Pro volumes &mdash; 32 production-grade workflows: automations (cart recovery, lead scoring, invoice extraction) and AI agents (support agent, calendar assistant, research agent), each with a setup guide. $39 for both, instant download.</p>
+    <a class="btn" href="https://navkhan77.gumroad.com/l/n8n-automation-mega-bundle">Get the Mega Bundle &rarr;</a>
+  </div>
+  <div class="cta-box">
+    <h3>Need it customized for your exact process?</h3>
+    <p>I build custom n8n automations and AI agents professionally: your tools, your edge cases, tested and documented.</p>
+    <a class="btn ghost" href="https://www.fiverr.com/realkhan103/build-n8n-automations-and-ai-agents-that-run-your-business-on-autopilot" rel="nofollow sponsored">Hire me on Fiverr &rarr;</a>
+  </div>
+</article>
+<footer><div class="wrap">
+  <p>WorkflowForge — Free n8n workflow templates that actually work. Some links are affiliate links; they cost you nothing and keep the templates free. Not affiliated with n8n GmbH.</p>
+</div></footer>
+</body>
+</html>

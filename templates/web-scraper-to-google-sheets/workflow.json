@@ -1,0 +1,205 @@
+{
+  "name": "Web Scraper to Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Scheduled Web Scraper to Google Sheets\n\nTrack competitor prices, job listings, or product availability in a spreadsheet that updates itself every morning.\n\n**Setup time:** 15 minutes  ·  **Level:** Intermediate\n\n**You'll need accounts/credentials for:** Schedule, HTTP Request, HTML, Google Sheets\n\n**Replace these before running:**\n- `REPLACE_WITH_SPREADSHEET`\n\n**Setup steps:**\n1. Put your target URL in the HTTP Request node.\n2. Open the target page in your browser, right-click the value you want > Inspect, and copy a CSS selector for it into the HTML node.\n3. Connect Google Sheets and pick your spreadsheet; column names come from the Code node output.\n4. Run once manually to verify the extraction, then activate.\n5. Only scrape public pages, respect robots.txt, and keep the schedule gentle (once a day, not once a second).\n\nFree templates and updates: navkhan103.github.io",
+        "height": 618,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **Every Morning**.\n\n1. A Schedule Trigger fires every morning at 8:00.\n2. An HTTP Request node fetches the target page's HTML.\n3. An HTML node extracts values using CSS selectors (price, title, stock status - whatever you point it at).\n4. A Code node stamps each row with today's date.\n5. A Google Sheets node appends the row, building a time series you can chart.",
+        "height": 374,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        618
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read and AI nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 400,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        1032
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "b8c9d0e1-0001-4000-8000-000000000001",
+      "name": "Every Morning",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://example.com/pricing",
+        "options": {}
+      },
+      "id": "b8c9d0e1-0002-4000-8000-000000000002",
+      "name": "Fetch Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": "h1"
+            },
+            {
+              "key": "price",
+              "cssSelector": ".price, [class*=price]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b8c9d0e1-0003-4000-8000-000000000003",
+      "name": "Extract Values",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(i => ({ json: { date: new Date().toISOString().slice(0,10), title: i.json.title, price: i.json.price } }));"
+      },
+      "id": "b8c9d0e1-0004-4000-8000-000000000004",
+      "name": "Add Date Stamp",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        },
+        "options": {}
+      },
+      "id": "b8c9d0e1-0005-4000-8000-000000000005",
+      "name": "Append Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        880,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every Morning": {
+      "main": [
+        [
+          {
+            "node": "Fetch Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Page": {
+      "main": [
+        [
+          {
+            "node": "Extract Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Values": {
+      "main": [
+        [
+          {
+            "node": "Add Date Stamp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Date Stamp": {
+      "main": [
+        [
+          {
+            "node": "Append Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
