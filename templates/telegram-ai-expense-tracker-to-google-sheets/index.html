@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telegram Expense Tracker Bot with AI Extraction to Google Sheets</title>
+<meta name="description" content="Free n8n workflow template: Telegram bot receives expense messages, AI extracts amount/category/merchant, logs to Google Sheets. Set up in 15 minutes.">
+<link rel="canonical" href="https://navkhan103.github.io/templates/telegram-ai-expense-tracker-to-google-sheets/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkflowForge">
+<meta property="og:title" content="Telegram Expense Tracker Bot with AI Extraction to Google Sheets">
+<meta property="og:description" content="Free n8n workflow template: Telegram bot receives expense messages, AI extracts amount/category/merchant, logs to Google Sheets. Set up in 15 minutes.">
+<meta property="og:url" content="https://navkhan103.github.io/templates/telegram-ai-expense-tracker-to-google-sheets/">
+<meta property="og:image" content="https://navkhan103.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Telegram Expense Tracker Bot with AI Extraction to Google Sheets">
+<meta name="twitter:description" content="Free n8n workflow template: Telegram bot receives expense messages, AI extracts amount/category/merchant, logs to Google Sheets. Set up in 15 minutes.">
+<meta name="twitter:image" content="https://navkhan103.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What message formats does the AI understand?","acceptedAnswer":{"@type":"Answer","text":"The AI is trained to recognize various expense formats like 'Dinner $45', 'Gas $30 at Shell', 'Book $15 Amazon', 'Lunch 25 USD'. It extracts amount, merchant, and category. More specific details in the note field."}},{"@type":"Question","name":"What if the AI misclassifies an expense?","acceptedAnswer":{"@type":"Answer","text":"Review your expense sheet regularly. You can correct classifications in the sheet or improve the AI prompt in the OpenAI node with examples of your common expense types for better accuracy."}},{"@type":"Question","name":"How secure is sending expense data via Telegram?","acceptedAnswer":{"@type":"Answer","text":"The message travels from your phone to Telegram's servers, then to your n8n instance. For sensitive expense information, ensure your n8n instance is properly secured with HTTPS and access controls."}}]}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0B1D33;color:#E8EFF7;line-height:1.6}
+a{color:#FFB020;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid #1d3a5c;padding:16px 0}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:800;color:#fff}.logo span{color:#FFB020}
+nav a{margin-left:20px;font-size:15px;color:#C9D6E5}
+.hero{padding:64px 0 40px;text-align:center}
+.hero h1{font-size:40px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:14px}
+.hero h1 em{color:#FFB020;font-style:normal}
+.hero p{font-size:18px;color:#C9D6E5;max-width:640px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;padding:32px 0 56px}
+.card{background:#12304F;border:1px solid #29496e;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.card h3{color:#fff;font-size:18px;line-height:1.3}
+.card .apps{font-size:13px;color:#8FA8C2}
+.card p{font-size:14px;color:#C9D6E5;flex:1}
+.badge{display:inline-block;background:rgba(255,176,32,.12);color:#FFB020;border:1px solid rgba(255,176,32,.4);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}
+.btn{display:inline-block;background:#FFB020;color:#0B1D33;font-weight:700;padding:12px 22px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:#FFB020;border:2px solid #FFB020}
+article{padding:48px 0 24px;max-width:760px;margin:0 auto}
+article h1{font-size:32px;color:#fff;line-height:1.2;margin-bottom:10px}
+article .meta{color:#8FA8C2;font-size:14px;margin-bottom:22px}
+article h2{font-size:22px;color:#fff;margin:34px 0 12px}
+article p,article li{color:#C9D6E5;font-size:16px}
+article ol,article ul{padding-left:22px;display:grid;gap:8px;margin:10px 0}
+.cta-box{background:#12304F;border:1px solid #FFB020;border-radius:14px;padding:24px;margin:30px 0;text-align:center}
+.cta-box h3{color:#fff;margin-bottom:8px}.cta-box p{margin-bottom:14px}
+.dl{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}
+.faq-item{margin-bottom:16px}.faq-item strong{color:#fff;display:block;margin-bottom:4px}
+footer{border-top:1px solid #1d3a5c;padding:28px 0;margin-top:40px;font-size:13px;color:#8FA8C2}
+footer a{color:#8FA8C2}
+.crumbs{font-size:13px;color:#8FA8C2;padding-top:24px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="/">Workflow<span>Forge</span></a>
+  <nav><a href="/">Templates</a><a href="https://www.fiverr.com/realkhan103/build-n8n-automations-and-ai-agents-that-run-your-business-on-autopilot" rel="nofollow sponsored">Hire a builder</a></nav>
+</div></header>
+
+<div class="wrap"><div class="crumbs"><a href="/">Templates</a> / Telegram AI Expense Tracker: Track Expenses via Bot to Google Sheets</div></div>
+<article class="wrap">
+  <h1>Telegram AI Expense Tracker: Track Expenses via Bot to Google Sheets</h1>
+  <div class="meta"><span class="badge">Intermediate</span> &nbsp; Apps: Telegram, OpenAI, Google Sheets &nbsp;·&nbsp; Setup: 15 minutes</div>
+  <p>Expense tracking apps require separate logins and complex interfaces, making it hard to quickly record purchases. Receipt photos get lost in your phone gallery. This workflow creates a Telegram bot where you can send simple messages like 'Coffee $4.50 at Starbucks' and have AI automatically extract the amount, category, merchant, and timestamp into a Google Sheet for easy analysis.</p>
+  <div class="dl">
+    <a class="btn" href="workflow.json" download="telegram-ai-expense-tracker-to-google-sheets.json">Download workflow JSON (free)</a>
+    <a class="btn ghost" href="#setup">Setup guide</a>
+  </div>
+  <h2>What this workflow does</h2>
+  <ol><li>A Telegram Trigger listens for messages sent to your bot.</li><li>An OpenAI node extracts amount, category, and merchant from the message text.</li><li>A Code node validates the extracted data and formats it for Sheets.</li><li>A Google Sheets node appends the expense to your expense tracking spreadsheet.</li><li>The bot sends a confirmation message back to the user.</li></ol>
+  <h2 id="setup">Setup guide</h2>
+  <ol><li>Import the JSON into n8n (Workflows &gt; Import from File).</li><li>Connect Telegram, OpenAI, and Google Sheets in their respective nodes.</li><li>Replace REPLACE_WITH_BOT_TOKEN with your Telegram bot token.</li><li>Replace REPLACE_WITH_SPREADSHEET with your Google Sheet ID.</li><li>Create a Google Sheet with columns: Date, Amount, Category, Merchant, Note.</li><li>Set up your Telegram bot webhook to point to this workflow's Telegram Trigger URL.</li></ol>
+  <div class="cta-box">
+    <h3>Want this running 24/7?</h3>
+    <p>Self-host n8n on a cheap VPS and this workflow runs around the clock for less than a coffee a month.</p>
+    <a class="btn" href="https://www.hostinger.com?REFERRALCODE=ZHVNAVKHADAZ" rel="nofollow sponsored">Get an n8n VPS from $5/month</a>
+  </div>
+  <h2>FAQ</h2>
+  <div class="faq-item"><strong>What message formats does the AI understand?</strong><span>The AI is trained to recognize various expense formats like 'Dinner $45', 'Gas $30 at Shell', 'Book $15 Amazon', 'Lunch 25 USD'. It extracts amount, merchant, and category. More specific details in the note field.</span></div><div class="faq-item"><strong>What if the AI misclassifies an expense?</strong><span>Review your expense sheet regularly. You can correct classifications in the sheet or improve the AI prompt in the OpenAI node with examples of your common expense types for better accuracy.</span></div><div class="faq-item"><strong>How secure is sending expense data via Telegram?</strong><span>The message travels from your phone to Telegram's servers, then to your n8n instance. For sensitive expense information, ensure your n8n instance is properly secured with HTTPS and access controls.</span></div>
+  <div class="cta-box">
+    <h3>Want the workflows this one is a warm-up for?</h3>
+    <p>The Mega Bundle packs both WorkflowForge Pro volumes &mdash; 32 production-grade workflows: automations (cart recovery, lead scoring, invoice extraction) and AI agents (support agent, calendar assistant, research agent), each with a setup guide. $39 for both, instant download.</p>
+    <a class="btn" href="https://navkhan77.gumroad.com/l/n8n-automation-mega-bundle">Get the Mega Bundle &rarr;</a>
+  </div>
+  <div class="cta-box">
+    <h3>Need it customized for your exact process?</h3>
+    <p>I build custom n8n automations and AI agents professionally: your tools, your edge cases, tested and documented.</p>
+    <a class="btn ghost" href="https://www.fiverr.com/realkhan103/build-n8n-automations-and-ai-agents-that-run-your-business-on-autopilot" rel="nofollow sponsored">Hire me on Fiverr &rarr;</a>
+  </div>
+</article>
+<footer><div class="wrap">
+  <p>WorkflowForge — Free n8n workflow templates that actually work. Some links are affiliate links; they cost you nothing and keep the templates free. Not affiliated with n8n GmbH.</p>
+</div></footer>
+</body>
+</html>

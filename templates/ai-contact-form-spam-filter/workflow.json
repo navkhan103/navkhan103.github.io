@@ -1,0 +1,253 @@
+{
+  "name": "AI Contact Form Spam Filter",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## AI Contact Form Spam Filter: Classify & Route Submissions\n\nAutomatically filter spam from legitimate contact form submissions using AI, logging all submissions while only notifying you about real leads.\n\n**Setup time:** 10 minutes  ·  **Level:** Intermediate\n\n**You'll need accounts/credentials for:** OpenAI, Google Sheets, Gmail\n\n**Replace these before running:**\n- `REPLACE_WITH_SPREADSHEET`\n\n**Setup steps:**\n1. Connect OpenAI, Google Sheets, and Gmail in their respective nodes.\n2. Replace REPLACE_WITH_SPREADSHEET with your Google Sheet ID.\n3. Set up the Webhook URL on your website's contact form handler.\n4. Customize the AI classification prompt to match your spam patterns.\n5. Test with sample submissions before going live.\n\nFree templates and updates: navkhan103.github.io",
+        "height": 300,
+        "width": 400,
+        "color": 4
+      },
+      "id": "sticky-setup",
+      "name": "Setup — read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### How it runs\n\nStarts from **Webhook**.\n\n1. A Webhook node receives form submissions from your website.\n2. An OpenAI node classifies the submission as spam or legitimate with a confidence reason.\n3. An IF node routes spam to a 'Spam Log' sheet, and legitimate submissions to a 'Leads' sheet.\n4. For legitimate submissions, a Gmail node sends you an alert with the lead details.\n5. All submissions are tracked in sheets for analytics and training improvements.",
+        "height": 300,
+        "width": 400,
+        "color": 7
+      },
+      "id": "sticky-how",
+      "name": "How it runs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### If something breaks\n\nThe read nodes here **retry 3× automatically** (5s apart), which absorbs rate limits and brief timeouts.\n\nNodes that **send or write deliberately do not retry** — a send that reached the far end but lost its response would otherwise fire twice, so you'd get duplicate messages or duplicate rows.\n\nTo be told when one of those fails, build a workflow starting with an **Error Trigger** node that posts to Slack or email, then set it under **three-dot menu > Settings > Error Workflow**. Do it once and point every workflow at it.",
+        "height": 380,
+        "width": 400,
+        "color": 3
+      },
+      "id": "sticky-fail",
+      "name": "If something breaks",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        560
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f9a0b1c2-0001-4000-8000-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "contact-form-submission"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5.6-luna"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Classify this contact form submission as SPAM or LEGITIMATE. Provide a brief reason for your classification. Return only: {\"classification\": \"SPAM|LEGITIMATE\", \"reason\": \"brief explanation\"}\n\nForm data:\n{{ JSON.stringify($json.body || $json) }}",
+              "role": "user"
+            }
+          ]
+        }
+      },
+      "id": "f9a0b1c2-0002-4000-8000-000000000002",
+      "name": "Classify Submission",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse AI response and combine with original form data\ntry {\n  const aiResponse = JSON.parse($input.first().json.message.content);\n  const formData = $('Webhook').first().json;\n  \n  return [{ json: {\n    ...formData,\n    classification: aiResponse.classification,\n    reason: aiResponse.reason,\n    timestamp: new Date().toISOString()\n  } }];\n} catch (error) {\n  // If AI response parsing fails, treat as spam with error note\n  const formData = $('Webhook').first().json;\n  return [{ json: {\n    ...formData,\n    classification: 'SPAM',\n    reason: `AI response parsing failed: ${error.message}`,\n    timestamp: new Date().toISOString()\n  } }];\n}"
+      },
+      "id": "f9a0b1c2-0003-4000-8000-000000000003",
+      "name": "Combine Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.classification }}",
+              "rightValue": "LEGITIMATE",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f9a0b1c2-0004-4000-8000-000000000004",
+      "name": "Legitimate?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET"
+        },
+        "sheetName": "Spam Log",
+        "columns": "timestamp,email,name,message,classification,reason"
+      },
+      "id": "f9a0b1c2-0005-4000-8000-000000000005",
+      "name": "Log Spam",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        880,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_SPREADSHEET"
+        },
+        "sheetName": "Lead Log",
+        "columns": "timestamp,email,name,message,classification,reason"
+      },
+      "id": "f9a0b1c2-0006-4000-8000-000000000006",
+      "name": "Log Lead",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        880,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "toEmail": "your-email@example.com",
+        "subject": "New Lead from Contact Form: {{ $json.name }}",
+        "htmlContent": "<h2>New Lead Alert</h2><p><strong>Name:</strong> {{ $json.name }}</p><p><strong>Email:</strong> {{ $json.email }}</p><p><strong>Message:</strong><br>{{ $json.message }}</p><p><strong>AI Reasoning:</strong> {{ $json.reason }}</p>"
+      },
+      "id": "f9a0b1c2-0007-4000-8000-000000000007",
+      "name": "Notify Lead",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1100,
+        -80
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Classify Submission",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Submission": {
+      "main": [
+        [
+          {
+            "node": "Combine Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Data": {
+      "main": [
+        [
+          {
+            "node": "Legitimate?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Legitimate?": {
+      "main": [
+        [
+          {
+            "node": "Log Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Spam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
